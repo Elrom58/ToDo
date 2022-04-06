@@ -1,0 +1,14 @@
+/*
+* {
+    border: 1px solid red;
+}
+*/
+#body {
+    background-color: #ccc;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
