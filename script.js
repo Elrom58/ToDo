@@ -18,7 +18,7 @@ const handleSubmit = (event) => {
     const newListItem = document.createElement("li");
 
     newListItem.innerHTML = `<div class='row mt-5'>
-                            <div class='col-9'><input type='text' class='w-100' name='todo' value='${inputValue}'></input></div>
+                            <div class='col-9'><input type='text' class='w-100' name='todo' value='${inputValue}' readonly></input></div>
                             <div class='col-3 text-end'><button name='update' type='button' class='btn btn-success'><i class="far fa-edit"></i> | Eintrag ändern</button>
                             <button type='button' name='delete' class='btn btn-danger del'><i class="far fa-trash-alt"></i> | Eintrag löschen</button></div></div>`;
     list.append(newListItem);
@@ -31,23 +31,21 @@ const handleClick = (event) => {
     if(event.target.name === "delete") {
         handleRemove(event)
     } else if(event.target.name === "update") {
-        let updateToDo = prompt("Neuer Wert für dieses ToDo!");
-        event.target.closest('li').children[0].children[0].children[0].value = updateToDo;
-
-        //document.getElementsByName('todo')[1].value = updateToDo;
-        //console.log(document.getElementsByName('todo')[1]);
+        handleUpdate(event)
     }    
 }
 
-
-// Als Arrowfunction 
+// EventHandler, die durchgereicht werden
 const handleRemove = (event) => {
     event.target.closest('li').remove();
+}
+
+const handleUpdate = (event) => {
+    event.target.closest('li').children[0].children[0].children[0].value = prompt("Neuer Wert für dieses ToDo!");
 }
 
 //EventListener
 form.addEventListener("submit", handleSubmit);
 list.addEventListener("click", handleClick);
-//list.addEventListener("click", handleRemove);  
 
 
