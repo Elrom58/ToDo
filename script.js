@@ -2,7 +2,30 @@
 //DOM-Elemente 
 const list = document.getElementById("submit-history");
 const form = document.getElementById("todo-form");
+const toDoObj = [];
 
+let tmpToDoObj = JSON.parse(localStorage.getItem('toDoList'));
+
+console.log(tmpToDoObj);
+
+
+
+/* 
+Object.keys(tmpToDoObj).forEach(key => {
+    
+    console.log(key, tmpToDoObj[key]);
+    
+    const newListItem = document.createElement("li");
+
+    newListItem.innerHTML = `<div class='row mt-5'>
+                            <div class='col-6'><input type='text' class='w-100' name='todo' value='${tmpToDoObj[0]}' readonly></input></div>
+                            <div class='col-6 text-end'><input type='checkbox'name='done'> Erledigt &nbsp;&nbsp;<button name='update' type='button' class='btn btn-success'><i class="far fa-edit"></i> | Eintrag ändern</button>
+                            <button type='button' name='delete' class='btn btn-danger del'><i class="far fa-trash-alt"></i> | Eintrag löschen</button></div></div>`;
+    list.append(newListItem);
+    
+
+});
+*/
 
 //EventHandler für das Submitevent
 const handleSubmit = (event) => {
@@ -18,13 +41,23 @@ const handleSubmit = (event) => {
     const newListItem = document.createElement("li");
 
     newListItem.innerHTML = `<div class='row mt-5'>
-                            <div class='col-9'><input type='text' class='w-100' name='todo' value='${inputValue}' readonly></input></div>
-                            <div class='col-3 text-end'><button name='update' type='button' class='btn btn-success'><i class="far fa-edit"></i> | Eintrag ändern</button>
+                            <div class='col-6'><input type='text' class='w-100' name='todo' value='${inputValue}' readonly></input></div>
+                            <div class='col-6 text-end'><input type='checkbox'name='done'> Erledigt &nbsp;&nbsp;<button name='update' type='button' class='btn btn-success'><i class="far fa-edit"></i> | Eintrag ändern</button>
                             <button type='button' name='delete' class='btn btn-danger del'><i class="far fa-trash-alt"></i> | Eintrag löschen</button></div></div>`;
     list.append(newListItem);
+
+    toDoObj.push({todo :inputValue, checked: false}); 
     document.getElementById("todo-input").value = "";
+    
+    Object.keys(toDoObj).forEach(key => {
+        console.log(key, toDoObj[key]);
+      });
+
     }
 };
+
+
+//const newListItem =
 
 
 const handleClick = (event) => {
@@ -32,11 +65,18 @@ const handleClick = (event) => {
         handleRemove(event)
     } else if(event.target.name === "update") {
         handleUpdate(event)
-    }    
+    } else if (event.target.name === "done") {
+        handleDone(event)
+    }   
 }
 
 // EventHandler, die durchgereicht werden
 const handleRemove = (event) => {
+    const listItem = event.target.closest('li').children[0].children[0].children[0].value;
+    objIndex = toDoObj.findIndex((toDoObj => toDoObj.todo == listItem));
+    if (objIndex > -1) {
+        toDoObj.splice(objIndex, 1);
+      }   
     event.target.closest('li').remove();
 }
 
@@ -44,8 +84,32 @@ const handleUpdate = (event) => {
     event.target.closest('li').children[0].children[0].children[0].value = prompt("Neuer Wert für dieses ToDo!");
 }
 
+const handleDone = (event) => {
+    const listItem = event.target.closest('li').children[0].children[0].children[0].value;
+    const doneItem = event.target.closest('li').children[0].children[1].children[0].checked;
+
+    objIndex = toDoObj.findIndex((toDoObj => toDoObj.todo == listItem));
+  
+    //Log object to Console.
+    console.log("Before update: ", toDoObj[objIndex])
+
+    if(toDoObj[objIndex].checked === false){
+        toDoObj[objIndex].checked = true;
+    } else {
+        toDoObj[objIndex].checked = false;
+    }
+    console.log("After update: ", toDoObj[objIndex])
+}
+
+const handleUnload = (event) => {
+    localStorage.setItem('toDoList', JSON.stringify(toDoObj));
+}
+
 //EventListener
 form.addEventListener("submit", handleSubmit);
 list.addEventListener("click", handleClick);
+window.addEventListener("unload", handleUnload);
+
+
 
 
