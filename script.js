@@ -4,28 +4,9 @@ const list = document.getElementById("submit-history");
 const form = document.getElementById("todo-form");
 const toDoObj = [];
 
-let tmpToDoObj = JSON.parse(localStorage.getItem('toDoList'));
+const tmpToDoObj = localStorage.getItem('toDoList');
 
 console.log(tmpToDoObj);
-
-
-
-/* 
-Object.keys(tmpToDoObj).forEach(key => {
-    
-    console.log(key, tmpToDoObj[key]);
-    
-    const newListItem = document.createElement("li");
-
-    newListItem.innerHTML = `<div class='row mt-5'>
-                            <div class='col-6'><input type='text' class='w-100' name='todo' value='${tmpToDoObj[0]}' readonly></input></div>
-                            <div class='col-6 text-end'><input type='checkbox'name='done'> Erledigt &nbsp;&nbsp;<button name='update' type='button' class='btn btn-success'><i class="far fa-edit"></i> | Eintrag ändern</button>
-                            <button type='button' name='delete' class='btn btn-danger del'><i class="far fa-trash-alt"></i> | Eintrag löschen</button></div></div>`;
-    list.append(newListItem);
-    
-
-});
-*/
 
 //EventHandler für das Submitevent
 const handleSubmit = (event) => {
@@ -55,10 +36,6 @@ const handleSubmit = (event) => {
 
     }
 };
-
-
-//const newListItem =
-
 
 const handleClick = (event) => {
     if(event.target.name === "delete") {
