@@ -2,11 +2,35 @@
 //DOM-Elemente 
 const list = document.getElementById("submit-history");
 const form = document.getElementById("todo-form");
-const toDoObj = [];
+//const toDoObj = [];
 
-const tmpToDoObj = localStorage.getItem('toDoList');
+const toDoObj = JSON.parse(localStorage.getItem('toDoList'));
 
-console.log(tmpToDoObj);
+if(toDoObj.length !== 0) {
+    for(let i = 0; i < toDoObj.length; i++){
+        
+        console.log(toDoObj[i].todo);
+        console.log(toDoObj[i].checked);
+        let check;
+
+        if(toDoObj[i].checked === true){
+             check = "checked";
+        } else {
+             check = "";
+        }    
+
+
+        const historyListItem = document.createElement("li");
+        historyListItem.innerHTML = `<div class='row mt-5'>
+                            <div class='col-6'><input type='text' class='w-100' name='todo' value='${toDoObj[i].todo}' readonly></input></div>
+                            <div class='col-6 text-end'><input type='checkbox' name='done' ${check}> Erledigt &nbsp;&nbsp;<button name='update' type='button' class='btn btn-success'><i class="far fa-edit"></i> | Eintrag ändern</button>
+                            <button type='button' name='delete' class='btn btn-danger del'><i class="far fa-trash-alt"></i> | Eintrag löschen</button></div></div>`;
+        
+        list.append(historyListItem);
+        
+
+    }
+}
 
 //EventHandler für das Submitevent
 const handleSubmit = (event) => {
